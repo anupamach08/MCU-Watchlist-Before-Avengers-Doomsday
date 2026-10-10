@@ -1,59 +1,67 @@
 /**
  * src/components/GeneratedPoster.tsx
  *
- * Copyright-free generated 2:3 portrait poster component.
- * Built entirely from algorithmic CSS/SVG vector elements:
- * 1. Seeded deterministic gradient background
- * 2. Abstract generative geometry (rays, grids, particles, concentric rings, halftone)
- * 3. Tinted glow & atmospheric lighting
- * 4. Procedural film-grain & vignette
- * 5. Monogram/badge identifier (P1, S2, AEG, etc.)
- * 6. Format strip (FEATURE FILM, SERIES, SPECIAL, etc.)
- * 7. Scrim-backed title artwork passing 4.5:1 contrast
+ * Copyright-compliant cinematic poster component.
  *
- * Supports pluggable external CC0 posters with automatic fallback on load error.
+ * STRICT LICENSING POLICY:
+ * Does NOT assume images from TMDB, Google Images, or fan wikis are copyright-free.
+ * Renders an external image ONLY if explicitly verified with a valid license (CC0,
+ * Public Domain, or authorized API) and full attribution metadata.
+ *
+ * If a suitable licensed poster cannot be verified, it displays an original
+ * cinematic vector placeholder featuring:
+ * 1. Thematic code-based SVG illustration representing core movie symbols
+ * 2. Deterministic phase color palette and ambient lighting
+ * 3. Movie title prominently typeset on a high-contrast dark scrim
+ * 4. Format strip indicator (FEATURE FILM, SERIES, SPECIAL, etc.)
  */
 
 import React, { useState } from 'react';
 import type { TitleItem } from '../data/titles';
 import { posterThemes, getFormatShortLabel } from '../utils/posterColor';
+import { PosterIllustration } from './posters/PosterIllustrations';
+import { getVerifiedPoster } from '../data/posterConfig';
+import { ShieldCheck } from 'lucide-react';
 
 interface GeneratedPosterProps {
   item: TitleItem;
-  isWatched?: boolean;
 }
 
-export const GeneratedPoster: React.FC<GeneratedPosterProps> = ({ item, isWatched = false }) => {
+export const GeneratedPoster: React.FC<GeneratedPosterProps> = ({ item }) => {
   const [imageError, setImageError] = useState(false);
   const theme = posterThemes[item.posterHue] || posterThemes.crimson;
   const formatLabel = getFormatShortLabel(item.format);
 
-  // Pattern SVG renderer
+  // Check centralized registry for verified licensing compliance
+  const verifiedPoster = getVerifiedPoster(item.id, item.poster);
+  const canRenderExternalImage = verifiedPoster !== null && !imageError;
+
+  // Background pattern SVG renderer for the cinematic placeholder
   const renderPattern = () => {
     switch (item.patternType) {
       case 'rays':
         return (
           <svg
-            className="absolute inset-0 w-full h-full opacity-25 pointer-events-none"
+            className="absolute inset-0 w-full h-full opacity-20 pointer-events-none"
             xmlns="http://www.w3.org/2000/svg"
             viewBox="0 0 200 300"
             preserveAspectRatio="none"
           >
             <defs>
               <linearGradient id={`ray-grad-${item.id}`} x1="0%" y1="0%" x2="100%" y2="100%">
-                <stop offset="0%" stopColor="#FFFFFF" stopOpacity="0.6" />
+                <stop offset="0%" stopColor="#FFFFFF" stopOpacity="0.5" />
                 <stop offset="100%" stopColor="#FFFFFF" stopOpacity="0" />
               </linearGradient>
             </defs>
             <polygon points="0,0 80,0 200,300 120,300" fill={`url(#ray-grad-${item.id})`} />
-            <polygon points="120,0 160,0 60,300 20,300" fill={`url(#ray-grad-${item.id})`} opacity="0.4" />
+            <polygon points="120,0 160,0 60,300 20,300" fill={`url(#ray-grad-${item.id})`} opacity="0.3" />
           </svg>
         );
 
       case 'grid':
         return (
           <svg
-            className="absolute inset-0 w-full h-full opacity-20 pointer-events-none"
+            className="absolute inset-0 w-full h-full opacity-15 pointer-events-none"
             xmlns="http://www.w3.org/2000/svg"
             viewBox="0 0 200 300"
           >
@@ -69,7 +77,7 @@ export const GeneratedPoster: React.FC<GeneratedPosterProps> = ({ item, isWatche
       case 'particles':
         return (
           <svg
-            className="absolute inset-0 w-full h-full opacity-35 pointer-events-none"
+            className="absolute inset-0 w-full h-full opacity-25 pointer-events-none"
             xmlns="http://www.w3.org/2000/svg"
             viewBox="0 0 200 300"
           >
@@ -87,7 +95,7 @@ export const GeneratedPoster: React.FC<GeneratedPosterProps> = ({ item, isWatche
       case 'concentric':
         return (
           <svg
-            className="absolute inset-0 w-full h-full opacity-25 pointer-events-none"
+            className="absolute inset-0 w-full h-full opacity-20 pointer-events-none"
             xmlns="http://www.w3.org/2000/svg"
             viewBox="0 0 200 300"
           >
@@ -101,7 +109,7 @@ export const GeneratedPoster: React.FC<GeneratedPosterProps> = ({ item, isWatche
       case 'halftone':
         return (
           <svg
-            className="absolute inset-0 w-full h-full opacity-20 pointer-events-none"
+            className="absolute inset-0 w-full h-full opacity-15 pointer-events-none"
             xmlns="http://www.w3.org/2000/svg"
             viewBox="0 0 200 300"
           >
@@ -119,26 +127,45 @@ export const GeneratedPoster: React.FC<GeneratedPosterProps> = ({ item, isWatche
     }
   };
 
-  const hasPluggablePoster = item.poster && !imageError;
-
   return (
     <div
-      className="relative aspect-[2/3] w-full overflow-hidden rounded-lg bg-surface border border-border/80 shadow-md transition-transform duration-200 group-hover:scale-[1.02] group-hover:shadow-lg group-hover:border-accent/40"
+      className="relative aspect-[2/3] w-full overflow-hidden rounded-xl bg-surface border border-border/80 shadow-md transition-all duration-300 group-hover:scale-[1.02] group-hover:shadow-xl group-hover:border-accent/40"
       style={{
         background: theme.background,
       }}
     >
-      {/* Pluggable external poster if available */}
-      {hasPluggablePoster ? (
-        <img
-          src={item.poster!.url}
-          alt={item.poster!.alt || `${item.title} Poster`}
-          onError={() => setImageError(true)}
-          loading="lazy"
-          className="w-full h-full object-cover"
-        />
+      {/* 1. Verified Licensed Poster Image (if explicitly verified) */}
+      {canRenderExternalImage ? (
+        <div className="relative w-full h-full">
+          <img
+            src={verifiedPoster.url}
+            alt={verifiedPoster.alt || `${item.title} Poster`}
+            onError={() => setImageError(true)}
+            loading="lazy"
+            className="w-full h-full object-cover"
+          />
+
+          {/* Legal Attribution Badge */}
+          <div className="absolute bottom-2 left-2 right-2 z-10 flex items-center justify-between text-[10px] bg-black/85 text-text-muted px-2 py-1 rounded backdrop-blur-md border border-white/10">
+            <span className="flex items-center gap-1 text-green-text font-medium truncate">
+              <ShieldCheck className="w-3 h-3 text-green-text shrink-0" />
+              <span>{verifiedPoster.licenseName}</span>
+            </span>
+            {verifiedPoster.sourceUrl && (
+              <a
+                href={verifiedPoster.sourceUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="underline hover:text-white shrink-0 ml-2"
+                onClick={(e) => e.stopPropagation()}
+              >
+                Source
+              </a>
+            )}
+          </div>
+        </div>
       ) : (
-        /* Algorithmic CSS/SVG Poster Canvas */
+        /* 2. Original Cinematic Vector Placeholder (Default for 100% compliance) */
         <div className="absolute inset-0 flex flex-col justify-between p-3 select-none">
           {/* Subtle radial glow in background */}
           <div
@@ -150,10 +177,10 @@ export const GeneratedPoster: React.FC<GeneratedPosterProps> = ({ item, isWatche
           {renderPattern()}
 
           {/* Film Grain Vignette Layer */}
-          <div className="absolute inset-0 bg-radial-gradient from-transparent via-black/20 to-black/60 pointer-events-none" />
+          <div className="absolute inset-0 bg-radial-gradient from-transparent via-black/20 to-black/70 pointer-events-none" />
 
           {/* Top Format Strip */}
-          <div className="relative z-10 flex items-center justify-between">
+          <div className="relative z-10 flex items-center justify-between pr-8">
             <span
               className="text-[10px] font-bold tracking-widest uppercase px-1.5 py-0.5 rounded bg-black/60 backdrop-blur-sm border border-white/10"
               style={{ color: theme.formatColor }}
@@ -168,39 +195,17 @@ export const GeneratedPoster: React.FC<GeneratedPosterProps> = ({ item, isWatche
             )}
           </div>
 
-          {/* Center Monogram / Badge Artwork */}
-          <div className="relative z-10 flex flex-col items-center justify-center my-auto">
-            <div
-              className="w-16 h-16 sm:w-20 sm:h-20 rounded-2xl flex items-center justify-center border shadow-inner backdrop-blur-md"
-              style={{
-                backgroundColor: theme.badgeBg,
-                borderColor: theme.badgeBorder,
-              }}
-            >
-              <span
-                className="font-heading text-2xl sm:text-3xl font-bold tracking-wider"
-                style={{ color: theme.badgeText }}
-              >
-                {item.badgeText}
-              </span>
-            </div>
+          {/* Center Thematic Vector Illustration */}
+          <div className="relative z-10 flex flex-col items-center justify-center my-auto transition-transform duration-300 group-hover:scale-105">
+            <PosterIllustration id={item.id} className="w-24 h-24 sm:w-28 sm:h-28 drop-shadow-2xl" />
           </div>
 
-          {/* Bottom Scrim & Typeset Artwork Title (contrast > 20:1) */}
+          {/* Bottom Scrim & Typeset Artwork Title (Passes WCAG contrast > 20:1) */}
           <div className="relative z-10 mt-auto pt-4 bg-gradient-to-t from-[#0A0A0F] via-[#0A0A0F]/90 to-transparent -mx-3 -mb-3 px-3 pb-3">
             <p className="font-heading text-sm sm:text-base font-bold text-white tracking-wide uppercase line-clamp-2 drop-shadow-md leading-tight text-center">
               {item.title}
             </p>
           </div>
-        </div>
-      )}
-
-      {/* Watched Badge Indicator Overlay */}
-      {isWatched && (
-        <div className="absolute top-2 right-2 z-20 flex items-center justify-center w-7 h-7 rounded-full bg-accent text-white shadow-lg border border-white/20">
-          <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={3}>
-            <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
-          </svg>
         </div>
       )}
     </div>

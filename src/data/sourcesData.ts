@@ -3,7 +3,8 @@
  *
  * Detailed documentation for Sources & Methodology modal / drawer:
  * - Editorial choices & watching orders
- * - Copyright-free poster generation architecture
+ * - Copyright-free poster generation architecture & licensing compliance
+ * - Strict image licensing policy (TMDB / Google Images non-assumption)
  * - Resolution of dataset conflicts (Section 7)
  * - Accuracy and disclaimers
  */
@@ -28,7 +29,7 @@ export const conflictResolutions: ConflictResolution[] = [
     sourceVariant: 'A–Z source called it "Optional / Masterpiece"',
     resolvedTo: 'TV Mini-Series – Can skip but Masterpiece',
     rationale:
-      'Section 7 replaces generic "Optional" terminology with consistent format-first editorial note and amber highlight on "Masterpiece".',
+      'Section 7 replaces generic "Optional" terminology with consistent format-first editorial note and amber highlight on "Masterpiece". Condensed with bullet for clean wrapping.',
   },
   {
     item: 'Secret Invasion',
@@ -63,8 +64,10 @@ export const conflictResolutions: ConflictResolution[] = [
 export const methodologyContent = {
   editorialPhilosophy:
     "This watchlist was curated from an editorial perspective to help fans prepare for 'Avengers: Doomsday' without suffering MCU fatigue. Marvel Studios does not publish official skip guides or 'essential only' decrees. All 'Can skip', 'Understand basic plot', and 'Most Important' tags represent independent editorial opinions by the author.",
-  posterNotice:
-    'All posters displayed on this site are original, algorithmic CSS/SVG vector artworks created without copyrighted Marvel characters, costumes, shields, or proprietary imagery. Each poster derives its color harmony, geometric monogram, and abstract pattern deterministically from the title identifier.',
-  pluggablePosters:
-    'External poster photographs are supported via a pluggable API interface only when licensed under Creative Commons Zero (CC0) or public domain, with strict author attribution and zero third-party tracking.',
+  posterLicensingPolicy:
+    "Licensing compliance is prioritized for all poster visuals. Promotional movie posters, film stills, and assets hosted on TMDB, Google Images, or fan databases are copyrighted works owned by Marvel Studios / Disney and cannot be assumed copyright-free. This site does not scrape images, hotlink unverified assets, or bypass API terms.",
+  cinematicPlaceholderArchitecture:
+    "Because official studio posters are proprietary and cannot be verified as copyright-free, every title displays an original, code-based vector cinematic placeholder. Each placeholder features a custom SVG illustration representing the title's core themes, phase color palette, and high-contrast title typography.",
+  configurableRegistryNotice:
+    "Image sources are fully configurable via src/data/posterConfig.ts. External images are rendered only when an explicit, verified license (such as Creative Commons Zero / CC0, Public Domain, or authorized API terms) and full attribution metadata are provided. Unverified images automatically fall back to the cinematic vector placeholder.",
 };

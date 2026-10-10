@@ -22,13 +22,9 @@ export type TitleHighlight = 'important' | 'masterpiece';
 export type PosterHue = 'crimson' | 'steel' | 'teal' | 'violet' | 'gold' | 'emerald';
 export type PatternType = 'rays' | 'grid' | 'particles' | 'concentric' | 'halftone';
 
-export interface TitlePoster {
-  url: string;
-  alt: string;
-  license: string;
-  attribution?: string;
-  sourceUrl?: string;
-}
+import type { LicensedPosterConfig } from './posterConfig';
+
+export type TitlePoster = LicensedPosterConfig;
 
 export interface TitleItem {
   id: string;

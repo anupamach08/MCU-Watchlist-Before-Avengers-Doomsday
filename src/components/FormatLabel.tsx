@@ -3,8 +3,8 @@
  *
  * Renders the Section 7 editorial label pill.
  * Movies receive no label. Non-movies render with WCAG AA compliant colors:
- * - Green pill for "Most Important"
- * - Amber highlight for "Masterpiece" inside Moon Knight
+ * - Green pill for "Most Important" (Loki)
+ * - Amber highlight for "Masterpiece" inside Moon Knight, cleanly formatted with bullet separator
  * - Neutral dark-surface pill for standard labels
  */
 
@@ -34,16 +34,16 @@ export const FormatLabel: React.FC<FormatLabelProps> = ({ item, className = '' }
     );
   }
 
-  // Moon Knight with amber highlight on "Masterpiece"
-  if (item.highlight === 'masterpiece' && item.label.includes('Masterpiece')) {
-    const parts = item.label.split('Masterpiece');
+  // Moon Knight with amber highlight on "Masterpiece", formatted cleanly with bullet separator
+  if (item.id === 'moon-knight' || (item.highlight === 'masterpiece' && item.label.includes('Masterpiece'))) {
     return (
       <span
-        className={`inline-flex items-center px-2 py-0.5 rounded text-[12px] font-medium tracking-wide bg-surface-2 text-text border border-border shadow-sm ${className}`}
+        className={`inline-flex flex-wrap items-center gap-1 px-2 py-0.5 rounded text-[11px] sm:text-[12px] font-medium leading-snug bg-surface-2 text-text border border-border shadow-sm ${className}`}
       >
-        {parts[0]}
+        <span>TV Mini-Series</span>
+        <span className="text-text-muted/60">•</span>
+        <span>Can skip but</span>
         <span className="text-amber-text font-bold">Masterpiece</span>
-        {parts[1] || ''}
       </span>
     );
   }

@@ -1,0 +1,6 @@
+@echo off
+title MCU Doomsday Watchlist
+echo Starting MCU Doomsday Watchlist...
+echo Opening in your default browser...
+node scripts/serveLocal.cjs
+pause

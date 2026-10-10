@@ -90,18 +90,26 @@ export const SourcesModal: React.FC<SourcesModalProps> = ({ isOpen, onClose }) =
           </div>
         </section>
 
-        {/* Section 3: Copyright-Free Poster Architecture */}
-        <section className="mb-6 space-y-2">
+        {/* Section 3: Copyright-Free Poster Architecture & Licensing Policy */}
+        <section className="mb-6 space-y-3">
           <h3 className="text-sm font-semibold uppercase tracking-wider text-accent-text flex items-center gap-2">
             <Layers className="w-4 h-4" />
-            <span>3. Copyright-Free Poster Architecture</span>
+            <span>3. Poster Licensing Compliance & Thematic Illustrations</span>
           </h3>
-          <p className="text-sm text-text-muted leading-relaxed font-body">
-            {methodologyContent.posterNotice}
-          </p>
-          <p className="text-sm text-text-muted leading-relaxed font-body">
-            {methodologyContent.pluggablePosters}
-          </p>
+          <div className="bg-surface-2/60 border border-border/80 rounded-lg p-3.5 space-y-2.5 text-xs text-text-muted leading-relaxed">
+            <div>
+              <span className="font-semibold text-text block mb-1">Strict Licensing Policy:</span>
+              <p>{methodologyContent.posterLicensingPolicy}</p>
+            </div>
+            <div>
+              <span className="font-semibold text-text block mb-1">Original Thematic Vector Illustrations:</span>
+              <p>{methodologyContent.cinematicPlaceholderArchitecture}</p>
+            </div>
+            <div>
+              <span className="font-semibold text-text block mb-1">Configurable Poster Registry & Attribution:</span>
+              <p>{methodologyContent.configurableRegistryNotice}</p>
+            </div>
+          </div>
         </section>
 
         {/* Section 4: Full Legal Disclaimer */}

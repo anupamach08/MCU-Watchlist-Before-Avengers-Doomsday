@@ -2,10 +2,11 @@
  * src/components/MovieCard.tsx
  *
  * Card component for every title:
- * 1. 2:3 portrait poster (GeneratedPoster with pluggable fallback)
+ * 1. 2:3 portrait poster with custom code-based vector artwork
  * 2. Real HTML title directly beneath poster (wraps naturally, NEVER truncated)
  * 3. Section 7 editorial label directly beneath title (only for titles that have one)
- * 4. Interactive watched toggle with visible focus and accessible button
+ * 4. Interactive watched toggle with ONLY the checkmark icon (✓), no "Mark" text,
+ *    cleanly aligned and fully responsive across all screen sizes.
  */
 
 import React from 'react';
@@ -34,21 +35,25 @@ export const MovieCard: React.FC<MovieCardProps> = ({
     >
       {/* 1. 2:3 Portrait Poster */}
       <div className="relative w-full">
-        <GeneratedPoster item={item} isWatched={isWatched} />
+        <GeneratedPoster item={item} />
 
-        {/* Quick Watched Toggle Button on Poster */}
+        {/* Clean Checkmark-Only Watched Action Button (No "Mark" text) */}
         <button
           type="button"
           onClick={() => onToggleWatched(item.id)}
           aria-label={isWatched ? `Mark ${item.title} as unwatched` : `Mark ${item.title} as watched`}
-          className={`absolute bottom-2 right-2 z-20 flex items-center gap-1.5 px-2.5 py-1 rounded-md text-xs font-semibold backdrop-blur-md transition-all duration-150 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent ${
+          title={isWatched ? 'Marked as watched (click to unmark)' : 'Mark as watched'}
+          className={`absolute top-2.5 right-2.5 z-20 flex items-center justify-center w-7 h-7 sm:w-8 sm:h-8 rounded-full backdrop-blur-md transition-all duration-150 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent ${
             isWatched
-              ? 'bg-accent text-white shadow-md'
-              : 'bg-surface/90 text-text hover:bg-surface-2 border border-border/80 hover:border-accent-text/60'
+              ? 'bg-accent text-white shadow-lg shadow-accent/40 scale-105 border border-white/30'
+              : 'bg-surface/85 text-text-muted hover:text-white hover:bg-surface-2 border border-border/80 hover:border-accent-text/60'
           }`}
         >
-          <Check className={`w-3.5 h-3.5 ${isWatched ? 'stroke-[3]' : 'opacity-70'}`} />
-          <span>{isWatched ? 'Watched' : 'Mark'}</span>
+          <Check
+            className={`w-4 h-4 transition-transform ${
+              isWatched ? 'stroke-[3] scale-110' : 'opacity-70 group-hover:opacity-100'
+            }`}
+          />
         </button>
       </div>
 
