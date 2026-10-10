@@ -1,0 +1,80 @@
+@import '@fontsource/oswald/500.css';
+@import '@fontsource/oswald/700.css';
+@import '@fontsource/inter/400.css';
+@import '@fontsource/inter/500.css';
+@import '@fontsource/inter/600.css';
+@import '@fontsource/inter/700.css';
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --bg: #0A0A0F;
+  --surface: #14141C;
+  --surface-2: #1D1D28;
+  --border: #2E2E3D;
+  --text: #F5F5F7;
+  --text-muted: #B8BCC8;
+  --accent: #E11D2E;
+  --accent-text: #FF6B78;
+  --green-bg: #0F3D24;
+  --green-text: #86F7B0;
+  --green-border: #22C55E;
+  --amber-text: #FFD27A;
+}
+
+/* Base Body Styles */
+html, body {
+  background-color: var(--bg);
+  color: var(--text);
+  font-family: 'Inter', system-ui, -apple-system, sans-serif;
+  overflow-x: hidden;
+  min-width: 320px;
+}
+
+/* Headings font */
+h1, h2, h3, .font-heading {
+  font-family: 'Oswald', sans-serif;
+}
+
+/* Accessible 2px Focus Rings for Interactive Elements */
+a:focus-visible,
+button:focus-visible,
+input:focus-visible,
+select:focus-visible,
+[tabindex]:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+/* Reduced Motion Respect */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  ::before,
+  ::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* Custom scrollbar styling for dark mode */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--bg);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--border);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--surface-2);
+}
